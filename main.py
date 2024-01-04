@@ -4,6 +4,7 @@ import os
 import time
 import requests
 from bs4 import BeautifulSoup
+from playsound import playsound 
 
 url = 'https://www.gismeteo.ru/weather-moscow-4368/' # Замените на ссылку на gismeteo вашего города
 city = 'в Москве' # Замените на название вашего города в подобной форме
@@ -37,7 +38,8 @@ while a != 0:
             html = response.content
 
             soup = BeautifulSoup(html, 'html.parser')
-            soup.html.body
+            
+            geo = soup.find('h1')
 
             timing=soup.find('div', attrs={'class':'day'})
             temp=soup.find('span', attrs={'class':'unit unit_temperature_c'})
@@ -80,14 +82,14 @@ while a != 0:
 
         elif 'время' in str(text).lower() or 'времени' in str(text).lower() or 'который час' in str(text).lower():
             t = time.localtime()
-            response = f'Сейчас {time.strftime("%H часов %M минут и %S секунд", t)}, а это значит самое время идти с мамой куда-то'
+            response = f'Сейчас {time.strftime("%H часов %M минут и %S секунд", t)}, а это значит самое время для подвигов'
 
         elif 'калькулятор' in str(text).lower() or 'посчитай' in str(text).lower() or 'сосчитай' in str(text).lower():
-            response = 'К сожалению у меня есть только его старая весия))'
+            response = 'Секунду'
             os.system('start calc.exe')
 
         elif 'коммандная' in str(text).lower() or 'строка' in str(text).lower() or 'взлом' in str(text).lower():
-            response = 'К сожалению у меня есть только его старая весия))'
+            response = 'Секунду'
             os.system('start cmd.exe')
 
 
@@ -97,12 +99,9 @@ while a != 0:
     
         try:
             audio = gTTS(text=response, lang='ru', slow=False)
-            audio.save("example.mp3")
-            os.system("start example.mp3")
+            audio.save('example.mp3')  
+            playsound(os.getcwd() + '\example.mp3')
             print(response)
             response = ''
         except:
             print(f'Проблемы с озвучкой')
-
-    else:
-        pass
