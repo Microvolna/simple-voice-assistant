@@ -4,7 +4,8 @@ import os
 import time
 import requests
 from bs4 import BeautifulSoup
-from playsound import playsound 
+from playsound import playsound
+import g4f 
 
 url = 'https://www.gismeteo.ru/weather-moscow-4368/' # Замените на ссылку на gismeteo вашего города
 city = 'в Москве' # Замените на название вашего города в подобной форме
@@ -94,14 +95,22 @@ while a != 0:
 
 
         else:
-            response = 'Я вас не совсем пониаю, господин'
+            response = g4f.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": text}],
+                stream=False,
+            )
+
+            response = response.replace('GPT-3.5: ','')
+
+
 
     
         try:
+            print(response)
             audio = gTTS(text=response, lang='ru', slow=False)
             audio.save('example.mp3')  
             playsound(os.getcwd() + '\example.mp3')
-            print(response)
             response = ''
         except:
             print(f'Проблемы с озвучкой')
