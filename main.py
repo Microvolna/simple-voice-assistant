@@ -14,7 +14,7 @@ while a != 0:
     r = sr.Recognizer()
 
     with sr.Microphone() as source:
-        print("Cлушаю, господин")
+        print('Cлушаю, '+consts.name)
         r.adjust_for_ambient_noise(source, duration=1)
         audio = r.listen(source)
 
@@ -22,7 +22,6 @@ while a != 0:
 
     try:
         text = r.recognize_google(audio, language="ru-RU")
-        print("Вы сказали: " + text)
     except sr.UnknownValueError:
         response = 'Извините, не удалось распознать речь'
     except sr.RequestError as e:
@@ -63,7 +62,7 @@ while a != 0:
         else:
             response = g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": text+' Меня зовут Иван'}],
+                messages=[{"role": "user", "content": text+' Меня зовут '+consts.name}],
                 stream=False,
             )
 
