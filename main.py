@@ -6,9 +6,8 @@ import requests
 from bs4 import BeautifulSoup
 from playsound import playsound
 import g4f 
+import consts
 
-url = 'https://www.gismeteo.ru/weather-moscow-4368/' # Замените на ссылку на gismeteo вашего города
-city = 'в Москве' # Замените на название вашего города в подобной форме
 
 a = 1
 while a != 0:
@@ -34,49 +33,16 @@ while a != 0:
             response = 'Здравствуйте, господин'
 
         elif 'погода' in str(text).lower() or 'погоду' in str(text).lower() or 'погоде' in str(text).lower() or 'температура' in str(text).lower() or 'температуре' in str(text).lower():
+
+            url = 'https://api.openweathermap.org/data/2.5/weather?q='+consts.city+'&units=metric&lang=ru&appid=79d1ca96933b0328e1c7e3e7a26cb347'
+
+            weather_data = requests.get(url).json()
+
+            temperature = round(weather_data['main']['temp'])
+            temperature_feels = round(weather_data['main'] ['feels_like'])
+
+            response = 'Сейчас в ', consts.city, str(temperature), '°C', 'это ощущается как ', str(temperature_feels), '°C'
             
-            response = requests.get(url, headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.2471 YaBrowser/23.11.0.2471 Yowser/2.5 Safari/537.36'})
-            html = response.content
-
-            soup = BeautifulSoup(html, 'html.parser')
-            
-            geo = soup.find('h1')
-
-            timing=soup.find('div', attrs={'class':'day'})
-            temp=soup.find('span', attrs={'class':'unit unit_temperature_c'})
-            temp_tomorrow_day=soup.find('span', attrs={'class':'unit unit_temperature_f'})
-
-            if '−' in temp.text or '−' in temp_tomorrow_day.text:
-
-                temp = "".join(filter(str.isdigit, temp.text))
-                temp_tomorrow_day = "".join(filter(str.isdigit, temp_tomorrow_day.text))
-
-                temp_minus = 'минус'
-                temp_tomorrow_day_minus = 'минус'
-
-                if int(temp) == int(temp_tomorrow_day):
-                    raznitsa = 'также'
-                elif int(temp) < int(temp_tomorrow_day):
-                    raznitsa = 'холоднее'
-                elif int(temp) > int(temp_tomorrow_day):
-                    raznitsa = 'теплее'
-            else:
-
-                temp = temp.text
-                temp_tomorrow_day = temp_tomorrow_day.text
-
-                temp_minus = ''
-                temp_tomorrow_day_minus = ''
-
-                if int(temp) == int(temp_tomorrow_day):
-                    raznitsa = 'также'
-                elif int(temp) > int(temp_tomorrow_day):
-                    raznitsa = 'холоднее'
-                elif int(temp) < int(temp_tomorrow_day):
-                    raznitsa = 'теплее'
-
-            response=f'По данным от гидрометеоцентра Гисметео на {timing.text} сегодня {city} {temp_minus} {temp} градуса по цельсию, а завтра днем будет {raznitsa} - {temp_tomorrow_day_minus} {temp_tomorrow_day} градуса по цельсию'
-
         elif 'как жизнь' in str(text).lower() or 'как дела' in str(text).lower() or 'как здоровье' in str(text).lower():
             response = 'Да по тихоньку, по легоньку, а у вас как?'
 
