@@ -30,7 +30,7 @@ while a != 0:
 
     if response == '':
         if 'привет' in str(text).lower() or 'здравствуйте' in str(text).lower() or 'здравствуй' in str(text).lower():
-            response = 'Здравствуйте, господин'
+            response = 'Здравствуйте, '+consts.name
 
         elif 'погода' in str(text).lower() or 'погоду' in str(text).lower() or 'погоде' in str(text).lower() or 'температура' in str(text).lower() or 'температуре' in str(text).lower():
 
@@ -41,7 +41,7 @@ while a != 0:
             temperature = round(weather_data['main']['temp'])
             temperature_feels = round(weather_data['main'] ['feels_like'])
 
-            response = 'Сейчас в ', consts.city, str(temperature), '°C', 'это ощущается как ', str(temperature_feels), '°C'
+            response = 'Сейчас в '+consts.city+str(temperature)+'°C, это ощущается как '+str(temperature_feels)+'°C'
             
         elif 'как жизнь' in str(text).lower() or 'как дела' in str(text).lower() or 'как здоровье' in str(text).lower():
             response = 'Да по тихоньку, по легоньку, а у вас как?'
@@ -63,7 +63,7 @@ while a != 0:
         else:
             response = g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": text}],
+                messages=[{"role": "user", "content": text+' Меня зовут Иван'}],
                 stream=False,
             )
 
