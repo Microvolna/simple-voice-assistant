@@ -62,7 +62,7 @@ while a != 0:
         else:
             response = g4f.ChatCompletion.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": text+' Меня зовут '+consts.name}],
+                messages=[{"role": "user", "content": f'Меня зовут - {consts.name}. Пожалуйста ответь на мой вопрос на русском языке: {text}'}],
                 stream=False,
             )
 
