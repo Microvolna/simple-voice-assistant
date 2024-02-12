@@ -40,7 +40,7 @@ while a != 0:
             temperature = round(weather_data['main']['temp'])
             temperature_feels = round(weather_data['main'] ['feels_like'])
 
-            response = 'Сейчас в '+consts.city+str(temperature)+'°C, это ощущается как '+str(temperature_feels)+'°C'
+            response = 'Сейчас в '+consts.city+' '+str(temperature)+'°C, это ощущается как '+str(temperature_feels)+'°C'
             
         elif 'как жизнь' in str(text).lower() or 'как дела' in str(text).lower() or 'как здоровье' in str(text).lower():
             response = 'Да по тихоньку, по легоньку, а у вас как?'
